@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8"/>
+<title>Panel Administrador – Saber Pro</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Segoe UI',sans-serif;background:#f5f0e8;min-height:100vh;}
+  nav{background:linear-gradient(135deg,#3b82f6,#1d4ed8);color:#fff;padding:14px 30px;display:flex;align-items:center;justify-content:space-between;}
+  nav .left-nav{display:flex;align-items:center;gap:14px;}
+  nav .logo{background:#fff;border-radius:8px;width:34px;height:34px;display:flex;align-items:center;justify-content:center;font-weight:800;color:#1d4ed8;font-size:12px;}
+  nav h1{font-size:18px;}
+  nav .right-nav{display:flex;align-items:center;gap:12px;font-size:14px;}
+  .btn-logout{background:rgba(255,255,255,0.2);border:1px solid rgba(255,255,255,0.4);color:#fff;padding:6px 14px;border-radius:6px;text-decoration:none;font-size:13px;}
+  .btn-logout:hover{background:rgba(255,255,255,0.3);}
+  .container{max-width:1100px;margin:30px auto;padding:0 20px;}
+  .section-title{font-size:17px;font-weight:700;color:#333;margin-bottom:18px;display:flex;align-items:center;gap:8px;}
+  .card{background:#fff;border-radius:12px;padding:28px;margin-bottom:28px;box-shadow:0 2px 8px rgba(0,0,0,.07);}
+  .form-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .form-group{display:flex;flex-direction:column;gap:5px;}
+  .form-group label{font-size:12px;color:#666;font-weight:600;}
+  .form-group input, .form-group select{padding:9px 12px;border:1.5px solid #ddd;border-radius:7px;font-size:14px;}
+  .form-group input:focus,.form-group select:focus{outline:none;border-color:#1d4ed8;}
+  .btn-primary{background:#5a7a2e;color:#fff;border:none;padding:10px 22px;border-radius:7px;font-size:14px;cursor:pointer;font-weight:600;display:flex;align-items:center;gap:6px;}
+  .btn-primary:hover{background:#4a6a22;}
+  .btn-row{margin-top:16px;display:flex;justify-content:center;}
+  table{width:100%;border-collapse:collapse;font-size:14px;}
+  thead tr{background:linear-gradient(135deg,#3b82f6,#1d4ed8);color:#fff;}
+  th,td{padding:10px 14px;text-align:left;border-bottom:1px solid #f0e8e0;}
+  tbody tr:hover{background:#faf6f2;}
+  .badge{padding:3px 10px;border-radius:20px;font-size:12px;font-weight:600;}
+  .badge-active{background:#d4edda;color:#155724;}
+  .badge-inactive{background:#f8d7da;color:#721c24;}
+  form.inline{display:inline;}
+  .btn-sm{padding:5px 12px;border-radius:6px;border:none;cursor:pointer;font-size:12px;font-weight:600;}
+  .btn-danger{background:#dc2626;color:#fff;}
+  .btn-danger:hover{background:#b91c1c;}
+  .btn-success{background:#5a7a2e;color:#fff;}
+  .btn-success:hover{background:#4a6a22;}
+  .alert-ok{background:#d4edda;color:#155724;border:1px solid #c3e6cb;padding:10px 14px;border-radius:8px;margin-bottom:16px;font-size:14px;}
+  .alert-err{background:#f8d7da;color:#721c24;border:1px solid #f5c6cb;padding:10px 14px;border-radius:8px;margin-bottom:16px;font-size:14px;}
+</style>
+</head>
+<body>
+<nav>
+  <div class="left-nav">
+    <div class="logo">uts</div>
+    <h1>👤 Panel Administrador</h1>
+  </div>
+  <div class="right-nav">
+    <span>Bienvenido, <strong th:text="${nombreAdmin}">Admin</strong></span>
+    <a href="/logout" class="btn-logout">Cerrar sesión</a>
+  </div>
+</nav>
+<div class="container">
+  <div th:if="${exito}" class="alert-ok" th:text="${exito}"></div>
+  <div th:if="${error}" class="alert-err" th:text="${error}"></div>
+
+  <div class="card">
+    <div class="section-title">👥 Crear Nuevo Coordinador</div>
+    <form action="/admin/coordinador/crear" method="post">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Tipo Documento</label>
+          <select name="tipoDocumento">
+            <option value="CC">Cédula de Ciudadanía</option>
+            <option value="CE">Cédula Extranjería</option>
+            <option value="TI">Tarjeta de Identidad</option>
+          </select>
+        </div>
+        <div class="form-group"><label># Número Documento</label><input type="text" name="numeroDocumento" required/></div>
+        <div class="form-group"><label>Primer Nombre</label><input type="text" name="primerNombre" required/></div>
+        <div class="form-group"><label>Segundo Nombre</label><input type="text" name="segundoNombre"/></div>
+        <div class="form-group"><label>Primer Apellido</label><input type="text" name="primerApellido" required/></div>
+        <div class="form-group"><label>Segundo Apellido</label><input type="text" name="segundoApellido"/></div>
+        <div class="form-group"><label>Correo Electrónico</label><input type="email" name="correo" required/></div>
+        <div class="form-group"><label>Teléfono</label><input type="text" name="telefono"/></div>
+        <div class="form-group"><label>Área Asignada</label><input type="text" name="areaAsignada" required/></div>
+        <div class="form-group"><label>Contraseña</label><input type="password" name="contrasena" placeholder="admin123" required/></div>
+      </div>
+      <div class="btn-row"><button type="submit" class="btn-primary">💾 CREAR COORDINADOR</button></div>
+    </form>
+  </div>
+
+  <div class="card">
+    <div class="section-title">📋 Lista de Coordinadores</div>
+    <table>
+      <thead><tr><th>ID</th><th>DOCUMENTO</th><th>NOMBRE COMPLETO</th><th>CORREO</th><th>ÁREA</th><th>ESTADO</th><th>ACCIÓN</th></tr></thead>
+      <tbody>
+        <tr th:each="c : ${coordinadores}">
+          <td th:text="${c.id}"></td>
+          <td th:text="${c.tipoDocumento + ' ' + c.numeroDocumento}"></td>
+          <td th:text="${c.nombreCompleto}"></td>
+          <td th:text="${c.correo}"></td>
+          <td th:text="${c.areaAsignada}"></td>
+          <td><span class="badge" th:classappend="${c.activo} ? 'badge-active' : 'badge-inactive'" th:text="${c.activo} ? 'Activo' : 'Inactivo'"></span></td>
+          <td>
+            <form class="inline" th:if="${c.activo}" th:action="'/admin/coordinador/desactivar/' + ${c.id}" method="post">
+              <button type="submit" class="btn-sm btn-danger">Desactivar</button>
+            </form>
+            <form class="inline" th:unless="${c.activo}" th:action="'/admin/coordinador/activar/' + ${c.id}" method="post">
+              <button type="submit" class="btn-sm btn-success">Activar</button>
+            </form>
+          </td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(coordinadores)}">
+          <td colspan="7" style="text-align:center;color:#999;padding:20px;">No hay coordinadores registrados.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+</body>
+</html>

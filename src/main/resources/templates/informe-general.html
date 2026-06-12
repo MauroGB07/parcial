@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8"/>
+<title>Informe General de Alumnos</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Segoe UI',sans-serif;background:#f5f0e8;}
+  .header{background:linear-gradient(135deg,#3b82f6,#1d4ed8);text-align:center;padding:24px 20px;color:#fff;}
+  .header .logo{background:#fff;border-radius:50%;width:50px;height:50px;display:flex;align-items:center;justify-content:center;margin:0 auto 8px;font-weight:800;color:#1d4ed8;font-size:12px;}
+  .header h2{font-size:19px;}
+  .header .info{font-size:13px;opacity:.85;margin-top:6px;}
+  .container{max-width:1200px;margin:24px auto;padding:0 20px;}
+  .actions{display:flex;gap:12px;justify-content:center;margin-bottom:20px;}
+  .btn{padding:9px 20px;border-radius:7px;border:none;cursor:pointer;font-size:13px;font-weight:600;text-decoration:none;display:inline-block;}
+  .btn-green{background:#5a7a2e;color:#fff;}
+  .btn-orange{background:#d4813a;color:#fff;}
+  .btn-back{background:rgba(29,78,216,0.1);color:#1d4ed8;border:1px solid #1d4ed8;}
+  .card{background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.07);}
+  table{width:100%;border-collapse:collapse;font-size:13px;}
+  thead tr{background:linear-gradient(135deg,#3b82f6,#1d4ed8);color:#fff;}
+  th,td{padding:10px 12px;text-align:left;border-bottom:1px solid #f0e8e0;}
+  tbody tr:hover{background:#faf6f2;}
+  .badge{padding:2px 9px;border-radius:20px;font-size:11px;font-weight:600;}
+  .badge-active{background:#d4edda;color:#155724;}
+  .badge-inactive{background:#f8d7da;color:#721c24;}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="logo">uts</div>
+  <h2>📄 Informe General de Alumnos</h2>
+  <div class="info">
+    👤 Coordinador: <strong th:text="${nombreCoordinador}">-</strong> &nbsp;|&nbsp;
+    🏛 Área: <strong th:text="${area}">-</strong> &nbsp;|&nbsp;
+    📅 <span th:text="${#dates.format(#dates.createNow(), 'dd/MM/yyyy HH:mm')}"></span>
+  </div>
+</div>
+<div class="container">
+  <div class="actions">
+    <span class="btn btn-green">📥 Exportar a Excel</span>
+    <button onclick="window.print()" class="btn btn-orange">🖨 Imprimir</button>
+    <a href="/coordinador" class="btn btn-back">← Volver al Panel</a>
+  </div>
+  <div class="card">
+    <table>
+      <thead>
+        <tr><th>Nº</th><th>DOCUMENTO</th><th>NOMBRE COMPLETO</th><th>PROGRAMA</th><th>SEMESTRE</th><th>Nº REGISTRO</th><th>CORREO</th><th>ESTADO</th><th>RESULTADOS</th></tr>
+      </thead>
+      <tbody>
+        <tr th:each="e,stat : ${estudiantes}">
+          <td th:text="${stat.count}"></td>
+          <td th:text="${e.identificacion}"></td>
+          <td th:text="${e.nombreCompleto}"></td>
+          <td th:text="${e.programa}"></td>
+          <td th:text="${e.semestre}"></td>
+          <td th:text="${e.numRegistro}"></td>
+          <td th:text="${e.correo}"></td>
+          <td><span class="badge" th:classappend="${e.activo} ? 'badge-active' : 'badge-inactive'" th:text="${e.activo} ? 'Activo' : 'Inactivo'"></span></td>
+          <td th:text="${e.puntajeGlobal != null} ? ${e.puntajeGlobal} : 'Sin resultado'"></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+</body>
+</html>

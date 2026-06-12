@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8"/>
+<title>Mi Último Resultado</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Segoe UI',sans-serif;background:#f5f0e8;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:30px;}
+  .card{background:#fff;border-radius:14px;width:500px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.1);}
+  .card-header{background:linear-gradient(135deg,#3b82f6,#1d4ed8);color:#fff;padding:18px;text-align:center;font-size:17px;font-weight:700;}
+  .card-body{padding:24px;}
+  .score-box{background:#5a7a2e;color:#fff;border-radius:10px;padding:18px;text-align:center;margin-bottom:20px;}
+  .score-box .trophy{font-size:32px;}
+  .score-box .lbl{font-size:12px;opacity:.85;margin:6px 0 2px;}
+  .score-box .num{font-size:46px;font-weight:800;}
+  .score-box .nivel{background:rgba(255,255,255,.2);display:inline-block;padding:3px 14px;border-radius:20px;font-size:13px;margin-top:4px;}
+  .score-box .fecha{font-size:12px;opacity:.7;margin-top:6px;}
+  .competencias{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
+  .comp{background:#f9f5f0;border-radius:8px;padding:12px;}
+  .comp .comp-name{font-size:11px;color:#666;margin-bottom:4px;}
+  .comp .comp-val{font-size:20px;font-weight:700;color:#333;}
+  .comp .comp-nivel{font-size:11px;color:#1d4ed8;}
+  .no-result{background:#fff3cd;border:1px solid #ffc107;border-radius:10px;padding:18px;text-align:center;color:#856404;font-size:14px;}
+  .btn-back{display:block;text-align:center;background:#5a7a2e;color:#fff;padding:11px;border-radius:8px;text-decoration:none;font-weight:600;margin-top:18px;}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="card-header">⭐ Mi Último Resultado Saber Pro</div>
+  <div class="card-body">
+    <div th:if="${estudiante.puntajeGlobal != null}">
+      <div class="score-box">
+        <div class="trophy">🏆</div>
+        <div class="lbl">Puntaje Global</div>
+        <div class="num" th:text="${estudiante.puntajeGlobal}">0</div>
+        <div class="nivel" th:text="${estudiante.nivelGlobal}">-</div>
+        <div class="fecha" th:if="${estudiante.fechaExamen}">📅 Fecha del examen: <span th:text="${estudiante.fechaExamen}"></span></div>
+      </div>
+      <div class="competencias">
+        <div class="comp" th:if="${estudiante.comunicacionEscrita != null}">
+          <div class="comp-name">✏ Comunicación Escrita</div>
+          <div class="comp-val" th:text="${estudiante.comunicacionEscrita}">-</div>
+          <div class="comp-nivel" th:text="${estudiante.comunicacionEscritaNivel}">-</div>
+        </div>
+        <div class="comp" th:if="${estudiante.razonamientoCuantitativo != null}">
+          <div class="comp-name">🔢 Razonamiento Cuantitativo</div>
+          <div class="comp-val" th:text="${estudiante.razonamientoCuantitativo}">-</div>
+          <div class="comp-nivel" th:text="${estudiante.razonamientoCuantitativoNivel}">-</div>
+        </div>
+        <div class="comp" th:if="${estudiante.lecturaCritica != null}">
+          <div class="comp-name">📖 Lectura Crítica</div>
+          <div class="comp-val" th:text="${estudiante.lecturaCritica}">-</div>
+          <div class="comp-nivel" th:text="${estudiante.lecturaCriticaNivel}">-</div>
+        </div>
+        <div class="comp" th:if="${estudiante.competenciasCiudadanas != null}">
+          <div class="comp-name">👥 Competencias Ciudadanas</div>
+          <div class="comp-val" th:text="${estudiante.competenciasCiudadanas}">-</div>
+          <div class="comp-nivel" th:text="${estudiante.competenciasCiudadanasNivel}">-</div>
+        </div>
+        <div class="comp" th:if="${estudiante.ingles != null}">
+          <div class="comp-name">🌐 Inglés</div>
+          <div class="comp-val" th:text="${estudiante.ingles}">-</div>
+          <div class="comp-nivel" th:text="${estudiante.inglesNivelMcer}">-</div>
+        </div>
+      </div>
+    </div>
+    <div th:unless="${estudiante.puntajeGlobal != null}" class="no-result">
+      ℹ️ Aún no tienes resultados registrados.
+    </div>
+    <a href="/estudiante/portal" class="btn-back">← Volver al Inicio</a>
+  </div>
+</div>
+</body>
+</html>

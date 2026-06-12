@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8"/>
+<title>Informe Detallado</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Segoe UI',sans-serif;background:#f5f0e8;}
+  .header{background:linear-gradient(135deg,#3b82f6,#1d4ed8);text-align:center;padding:20px;color:#fff;}
+  .header .logo{background:#fff;border-radius:50%;width:44px;height:44px;display:flex;align-items:center;justify-content:center;margin:0 auto 8px;font-weight:800;color:#1d4ed8;font-size:11px;}
+  .header h2{font-size:17px;}
+  .container{max-width:1400px;margin:20px auto;padding:0 16px;}
+  .top-bar{display:flex;align-items:center;gap:14px;margin-bottom:18px;flex-wrap:wrap;}
+  .filter-label{font-size:13px;color:#555;white-space:nowrap;}
+  select.filter{padding:8px 12px;border:1.5px solid #ddd;border-radius:7px;font-size:13px;}
+  .btn{padding:8px 18px;border-radius:7px;border:none;cursor:pointer;font-size:13px;font-weight:600;text-decoration:none;display:inline-block;}
+  .btn-green{background:#5a7a2e;color:#fff;}
+  .btn-orange{background:#d4813a;color:#fff;}
+  .btn-back{background:#eee;color:#555;}
+  .card{background:#fff;border-radius:12px;overflow:auto;box-shadow:0 2px 8px rgba(0,0,0,.07);}
+  table{width:100%;border-collapse:collapse;font-size:12px;min-width:900px;}
+  thead tr{background:linear-gradient(135deg,#3b82f6,#1d4ed8);color:#fff;}
+  th,td{padding:9px 10px;text-align:left;border-bottom:1px solid #f0e8e0;white-space:nowrap;}
+  tbody tr:hover{background:#faf6f2;}
+  .detail-btn{background:#1d4ed8;color:#fff;border:none;border-radius:50%;width:26px;height:26px;cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;transition:.15s;}
+  .detail-btn:hover{background:#3b82f6;transform:scale(1.08);}
+  .nivel-badge{padding:2px 7px;border-radius:10px;font-size:10px;background:#e8f5e9;color:#2e7d32;}
+  .modal-overlay{display:none;position:fixed;inset:0;background:rgba(15,23,42,.55);align-items:center;justify-content:center;z-index:100;}
+  .modal-overlay.active{display:flex;}
+  .modal-box{background:#fff;border-radius:14px;width:520px;max-width:92vw;max-height:88vh;overflow:auto;box-shadow:0 10px 40px rgba(0,0,0,.25);}
+  .modal-head{background:linear-gradient(135deg,#3b82f6,#1d4ed8);color:#fff;padding:18px 22px;display:flex;justify-content:space-between;align-items:center;}
+  .modal-head h3{font-size:16px;}
+  .modal-head span{font-size:12px;opacity:.85;display:block;margin-top:2px;}
+  .modal-close{background:rgba(255,255,255,.18);border:none;color:#fff;width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:15px;}
+  .modal-body{padding:20px 22px;}
+  .modal-section{font-size:11px;font-weight:700;color:#1d4ed8;text-transform:uppercase;letter-spacing:.5px;margin:14px 0 8px;}
+  .modal-section:first-child{margin-top:0;}
+  .modal-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
+  .modal-item{background:#f5f8ff;border-radius:8px;padding:10px 12px;}
+  .modal-item .lbl{font-size:10px;color:#888;text-transform:uppercase;margin-bottom:3px;}
+  .modal-item .val{font-size:14px;font-weight:700;color:#1e293b;}
+  .modal-item .nivel{font-size:11px;color:#1d4ed8;font-weight:600;}
+  .modal-global{background:linear-gradient(135deg,#3b82f6,#1d4ed8);color:#fff;border-radius:10px;padding:16px;text-align:center;margin-bottom:14px;}
+  .modal-global .num{font-size:36px;font-weight:800;}
+  .modal-global .nivel{background:rgba(255,255,255,.2);display:inline-block;padding:3px 14px;border-radius:20px;font-size:12px;margin-top:4px;}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="logo">uts</div>
+  <h2>📊 Informe Detallado de Resultados Saber Pro</h2>
+</div>
+<div class="container">
+  <div class="top-bar">
+    <span class="filter-label">🔽 Filtrar por programa:</span>
+    <form method="get" action="/coordinador/informe-detallado" style="display:flex;gap:8px;align-items:center;">
+      <select class="filter" name="programa" onchange="this.form.submit()">
+        <option value="">– Todos los programas –</option>
+        <option th:each="p : ${programas}" th:value="${p}" th:text="${p}" th:selected="${p == programaSeleccionado}"></option>
+      </select>
+    </form>
+    <a href="/coordinador/informe-detallado" class="btn btn-back">← Todos</a>
+    <button onclick="window.print()" class="btn btn-orange">🖨 Imprimir</button>
+    <a href="/coordinador" class="btn btn-back">← Volver</a>
+  </div>
+  <div class="card">
+    <table>
+      <thead>
+        <tr>
+          <th>DOCUMENTO</th><th>ESTUDIANTE</th><th>PROGRAMA</th>
+          <th>PUNTAJE GLOBAL</th><th>NIVEL GLOBAL</th>
+          <th>COM. ESCRITA</th><th>RAZ. CUANT.</th><th>LECT. CRÍTICA</th>
+          <th>COMP. CIUDADANAS</th><th>INGLÉS</th><th>FECHA EXAMEN</th><th>DETALLE</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:each="e : ${estudiantes}" th:if="${e.puntajeGlobal != null}">
+          <td th:text="${e.identificacion}"></td>
+          <td th:text="${e.nombreCompleto}"></td>
+          <td th:text="${e.programa}"></td>
+          <td style="font-weight:700;" th:text="${e.puntajeGlobal}"></td>
+          <td><span class="nivel-badge" th:text="${e.nivelGlobal}"></span></td>
+          <td th:text="${e.comunicacionEscrita != null} ? ${e.comunicacionEscrita + ' (' + e.comunicacionEscritaNivel + ')'} : '-'"></td>
+          <td th:text="${e.razonamientoCuantitativo != null} ? ${e.razonamientoCuantitativo + ' (' + e.razonamientoCuantitativoNivel + ')'} : '-'"></td>
+          <td th:text="${e.lecturaCritica != null} ? ${e.lecturaCritica + ' (' + e.lecturaCriticaNivel + ')'} : '-'"></td>
+          <td th:text="${e.competenciasCiudadanas != null} ? ${e.competenciasCiudadanas + ' (' + e.competenciasCiudadanasNivel + ')'} : '-'"></td>
+          <td th:text="${e.ingles != null} ? ${e.ingles + ' (' + e.inglesNivelMcer + ')'} : '-'"></td>
+          <td th:text="${e.fechaExamen}"></td>
+          <td><button class="detail-btn" title="Ver detalle" onclick="abrirDetalle(this)"
+              th:data-nombre="${e.nombreCompleto}"
+              th:data-doc="${(e.tipoDocumento != null ? e.tipoDocumento : '') + ' ' + e.identificacion}"
+              th:data-correo="${e.correo}"
+              th:data-telefono="${e.telefono != null} ? ${e.telefono} : '-'"
+              th:data-programa="${e.programa}"
+              th:data-tipoprograma="${e.tipoPrograma != null} ? ${e.tipoPrograma} : '-'"
+              th:data-semestre="${e.semestre != null} ? ${e.semestre} : '-'"
+              th:data-fecha="${e.fechaExamen != null} ? ${e.fechaExamen} : 'No registrada'"
+              th:data-global="${e.puntajeGlobal}"
+              th:data-globalnivel="${e.nivelGlobal}"
+              th:data-escrita="${e.comunicacionEscrita != null} ? ${e.comunicacionEscrita} : '-'"
+              th:data-escritanivel="${e.comunicacionEscritaNivel != null} ? ${e.comunicacionEscritaNivel} : '-'"
+              th:data-cuantitativo="${e.razonamientoCuantitativo != null} ? ${e.razonamientoCuantitativo} : '-'"
+              th:data-cuantitativonivel="${e.razonamientoCuantitativoNivel != null} ? ${e.razonamientoCuantitativoNivel} : '-'"
+              th:data-lectura="${e.lecturaCritica != null} ? ${e.lecturaCritica} : '-'"
+              th:data-lecturanivel="${e.lecturaCriticaNivel != null} ? ${e.lecturaCriticaNivel} : '-'"
+              th:data-ciudadanas="${e.competenciasCiudadanas != null} ? ${e.competenciasCiudadanas} : '-'"
+              th:data-ciudadanasnivel="${e.competenciasCiudadanasNivel != null} ? ${e.competenciasCiudadanasNivel} : '-'"
+              th:data-ingles="${e.ingles != null} ? ${e.ingles} : '-'"
+              th:data-inglesnivel="${e.inglesNivelMcer != null} ? ${e.inglesNivelMcer} : '-'"
+              th:data-proyectos="${e.formulacionProyectos != null} ? ${e.formulacionProyectos} : '-'"
+              th:data-proyectosnivel="${e.formulacionProyectosNivel != null} ? ${e.formulacionProyectosNivel} : '-'"
+              th:data-cientifico="${e.pensamientoCientifico != null} ? ${e.pensamientoCientifico} : '-'"
+              th:data-cientificonivel="${e.pensamientoCientificoNivel != null} ? ${e.pensamientoCientificoNivel} : '-'"
+              th:data-software="${e.disenoSoftware != null} ? ${e.disenoSoftware} : '-'"
+              th:data-softwarenivel="${e.disenoSoftwareNivel != null} ? ${e.disenoSoftwareNivel} : '-'"
+          >▶</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modalDetalle">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div>
+        <h3 id="mNombre">-</h3>
+        <span id="mDoc">-</span>
+      </div>
+      <button class="modal-close" onclick="cerrarDetalle()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-global">
+        <div style="font-size:12px;opacity:.85;">🏆 Puntaje Global</div>
+        <div class="num" id="mGlobal">-</div>
+        <div class="nivel" id="mGlobalNivel">-</div>
+      </div>
+
+      <div class="modal-section">Información del Estudiante</div>
+      <div class="modal-grid">
+        <div class="modal-item">
+          <div class="lbl">Correo</div>
+          <div class="val" id="mCorreo" style="font-size:12px;">-</div>
+        </div>
+        <div class="modal-item">
+          <div class="lbl">Teléfono</div>
+          <div class="val" id="mTelefono">-</div>
+        </div>
+        <div class="modal-item">
+          <div class="lbl">Programa</div>
+          <div class="val" id="mPrograma" style="font-size:12px;">-</div>
+        </div>
+        <div class="modal-item">
+          <div class="lbl">Tipo de Programa</div>
+          <div class="val" id="mTipoPrograma">-</div>
+        </div>
+        <div class="modal-item">
+          <div class="lbl">Semestre</div>
+          <div class="val" id="mSemestre">-</div>
+        </div>
+        <div class="modal-item">
+          <div class="lbl">Fecha de Examen</div>
+          <div class="val" id="mFecha">-</div>
+        </div>
+      </div>
+
+      <div class="modal-section">Competencias Genéricas</div>
+      <div class="modal-grid">
+        <div class="modal-item">
+          <div class="lbl">✏ Comunicación Escrita</div>
+          <div class="val" id="mEscrita">-</div>
+          <div class="nivel" id="mEscritaNivel">-</div>
+        </div>
+        <div class="modal-item">
+          <div class="lbl">🔢 Razonamiento Cuantitativo</div>
+          <div class="val" id="mCuantitativo">-</div>
+          <div class="nivel" id="mCuantitativoNivel">-</div>
+        </div>
+        <div class="modal-item">
+          <div class="lbl">📖 Lectura Crítica</div>
+          <div class="val" id="mLectura">-</div>
+          <div class="nivel" id="mLecturaNivel">-</div>
+        </div>
+        <div class="modal-item">
+          <div class="lbl">👥 Competencias Ciudadanas</div>
+          <div class="val" id="mCiudadanas">-</div>
+          <div class="nivel" id="mCiudadanasNivel">-</div>
+        </div>
+        <div class="modal-item">
+          <div class="lbl">🌐 Inglés</div>
+          <div class="val" id="mIngles">-</div>
+          <div class="nivel" id="mInglesNivel">-</div>
+        </div>
+      </div>
+
+      <div class="modal-section" id="mEspecificasTitle">Competencias Específicas</div>
+      <div class="modal-grid" id="mEspecificas">
+        <div class="modal-item">
+          <div class="lbl">📋 Formulación de Proyectos</div>
+          <div class="val" id="mProyectos">-</div>
+          <div class="nivel" id="mProyectosNivel">-</div>
+        </div>
+        <div class="modal-item">
+          <div class="lbl">🔬 Pensamiento Científico</div>
+          <div class="val" id="mCientifico">-</div>
+          <div class="nivel" id="mCientificoNivel">-</div>
+        </div>
+        <div class="modal-item">
+          <div class="lbl">💻 Diseño de Software</div>
+          <div class="val" id="mSoftware">-</div>
+          <div class="nivel" id="mSoftwareNivel">-</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function abrirDetalle(btn) {
+  const d = btn.dataset;
+  document.getElementById('mNombre').textContent = d.nombre || '-';
+  document.getElementById('mDoc').textContent = d.doc || '-';
+  document.getElementById('mGlobal').textContent = d.global || '-';
+  document.getElementById('mGlobalNivel').textContent = d.globalnivel || '-';
+  document.getElementById('mCorreo').textContent = d.correo || '-';
+  document.getElementById('mTelefono').textContent = d.telefono || '-';
+  document.getElementById('mPrograma').textContent = d.programa || '-';
+  document.getElementById('mTipoPrograma').textContent = d.tipoprograma || '-';
+  document.getElementById('mSemestre').textContent = d.semestre || '-';
+  document.getElementById('mFecha').textContent = d.fecha || '-';
+  document.getElementById('mEscrita').textContent = d.escrita || '-';
+  document.getElementById('mEscritaNivel').textContent = d.escritanivel || '-';
+  document.getElementById('mCuantitativo').textContent = d.cuantitativo || '-';
+  document.getElementById('mCuantitativoNivel').textContent = d.cuantitativonivel || '-';
+  document.getElementById('mLectura').textContent = d.lectura || '-';
+  document.getElementById('mLecturaNivel').textContent = d.lecturanivel || '-';
+  document.getElementById('mCiudadanas').textContent = d.ciudadanas || '-';
+  document.getElementById('mCiudadanasNivel').textContent = d.ciudadanasnivel || '-';
+  document.getElementById('mIngles').textContent = d.ingles || '-';
+  document.getElementById('mInglesNivel').textContent = d.inglesnivel || '-';
+  document.getElementById('mProyectos').textContent = d.proyectos || '-';
+  document.getElementById('mProyectosNivel').textContent = d.proyectosnivel || '-';
+  document.getElementById('mCientifico').textContent = d.cientifico || '-';
+  document.getElementById('mCientificoNivel').textContent = d.cientificonivel || '-';
+  document.getElementById('mSoftware').textContent = d.software || '-';
+  document.getElementById('mSoftwareNivel').textContent = d.softwarenivel || '-';
+
+  const tieneEspecificas = (d.proyectos !== '-' || d.cientifico !== '-' || d.software !== '-');
+  document.getElementById('mEspecificasTitle').style.display = tieneEspecificas ? '' : 'none';
+  document.getElementById('mEspecificas').style.display = tieneEspecificas ? '' : 'none';
+
+  document.getElementById('modalDetalle').classList.add('active');
+}
+function cerrarDetalle() {
+  document.getElementById('modalDetalle').classList.remove('active');
+}
+document.getElementById('modalDetalle').addEventListener('click', function(e) {
+  if (e.target === this) cerrarDetalle();
+});
+</script>
+</body>
+</html>

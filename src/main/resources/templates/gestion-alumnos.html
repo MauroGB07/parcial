@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8"/>
+<title>Gestión de Alumnos</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Segoe UI',sans-serif;background:#f5f0e8;min-height:100vh;}
+  nav{background:linear-gradient(135deg,#3b82f6,#1d4ed8);color:#fff;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;}
+  nav h1{font-size:17px;}
+  .btn-back{background:rgba(255,255,255,0.2);border:1px solid rgba(255,255,255,0.4);color:#fff;padding:6px 14px;border-radius:6px;text-decoration:none;font-size:13px;}
+  .container{max-width:1200px;margin:28px auto;padding:0 20px;}
+  .card{background:#fff;border-radius:12px;padding:24px;margin-bottom:24px;box-shadow:0 2px 8px rgba(0,0,0,.07);}
+  .section-title{font-size:16px;font-weight:700;color:#333;margin-bottom:18px;}
+  .form-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+  .form-group{display:flex;flex-direction:column;gap:4px;}
+  .form-group label{font-size:11px;color:#666;font-weight:600;text-transform:uppercase;}
+  .form-group input,.form-group select{padding:8px 10px;border:1.5px solid #ddd;border-radius:6px;font-size:13px;}
+  .form-group input:focus,.form-group select:focus{outline:none;border-color:#1d4ed8;}
+  .btn-row{margin-top:14px;display:flex;justify-content:center;}
+  .btn-primary{background:#5a7a2e;color:#fff;border:none;padding:10px 24px;border-radius:7px;font-size:14px;cursor:pointer;font-weight:600;}
+  .btn-primary:hover{background:#4a6a22;}
+  table{width:100%;border-collapse:collapse;font-size:13px;}
+  thead tr{background:linear-gradient(135deg,#3b82f6,#1d4ed8);color:#fff;}
+  th,td{padding:9px 12px;text-align:left;border-bottom:1px solid #f0e8e0;}
+  tbody tr:hover{background:#faf6f2;}
+  .badge{padding:2px 9px;border-radius:20px;font-size:11px;font-weight:600;}
+  .badge-active{background:#d4edda;color:#155724;}
+  .badge-inactive{background:#f8d7da;color:#721c24;}
+  .actions{display:flex;gap:6px;flex-wrap:wrap;}
+  .btn-sm{padding:4px 11px;border-radius:5px;border:none;cursor:pointer;font-size:12px;font-weight:600;}
+  .btn-edit{background:#e8a020;color:#fff;}
+  .btn-edit:hover{background:#c88010;}
+  .btn-cal{background:#5a7a2e;color:#fff;}
+  .btn-cal:hover{background:#4a6a22;}
+  .btn-danger{background:#dc2626;color:#fff;}
+  .btn-danger:hover{background:#b91c1c;}
+  .btn-success{background:#5a7a2e;color:#fff;}
+  form.inline{display:inline;}
+  .alert-err{background:#f8d7da;color:#721c24;padding:10px;border-radius:8px;margin-bottom:14px;font-size:13px;}
+</style>
+</head>
+<body>
+<nav>
+  <h1>👨‍🎓 Gestión de Alumnos</h1>
+  <a href="/coordinador" class="btn-back">← Volver al panel</a>
+</nav>
+<div class="container">
+  <div th:if="${error}" class="alert-err" th:text="${error}"></div>
+
+  <div class="card">
+    <div class="section-title">➕ Nuevo Estudiante</div>
+    <form action="/coordinador/alumnos/crear" method="post">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Tipo Documento</label>
+          <select name="tipoDocumento">
+            <option value="CC">Cédula de Ciudadanía</option>
+            <option value="CE">Cédula Extranjería</option>
+            <option value="TI">Tarjeta de Identidad</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Número Documento</label><input type="text" name="identificacion" required/></div>
+        <div class="form-group"><label>Primer Nombre</label><input type="text" name="primerNombre" required/></div>
+        <div class="form-group"><label>Segundo Nombre</label><input type="text" name="segundoNombre"/></div>
+        <div class="form-group"><label>Primer Apellido</label><input type="text" name="primerApellido" required/></div>
+        <div class="form-group"><label>Segundo Apellido</label><input type="text" name="segundoApellido"/></div>
+        <div class="form-group"><label>Correo</label><input type="email" name="correo" required/></div>
+        <div class="form-group"><label>Teléfono</label><input type="text" name="telefono"/></div>
+        <div class="form-group"><label>Nº Registro</label><input type="text" name="numRegistro"/></div>
+        <div class="form-group"><label>Semestre</label><input type="number" name="semestre" value="10"/></div>
+        <div class="form-group"><label>Programa</label><input type="text" name="programa" value="Ingeniería de Sistemas"/></div>
+        <div class="form-group">
+          <label>Tipo Programa</label>
+          <select name="tipoPrograma">
+            <option value="Profesional">Profesional</option>
+            <option value="Tecnología">Tecnología</option>
+          </select>
+        </div>
+      </div>
+      <div class="btn-row"><button type="submit" class="btn-primary">💾 Crear Estudiante</button></div>
+    </form>
+  </div>
+
+  <div class="card">
+    <div class="section-title">📋 Listado de Estudiantes</div>
+    <table>
+      <thead><tr><th>DOCUMENTO</th><th>NOMBRE COMPLETO</th><th>PROGRAMA</th><th>SEMESTRE</th><th>ESTADO</th><th>ACCIONES</th></tr></thead>
+      <tbody>
+        <tr th:each="e : ${estudiantes}">
+          <td th:text="${e.identificacion}"></td>
+          <td th:text="${e.nombreCompleto}"></td>
+          <td th:text="${e.programa}"></td>
+          <td th:text="${e.semestre}"></td>
+          <td><span class="badge" th:classappend="${e.activo} ? 'badge-active' : 'badge-inactive'" th:text="${e.activo} ? 'Activo' : 'Inactivo'"></span></td>
+          <td>
+            <div class="actions">
+              <a th:href="'/coordinador/alumnos/editar/' + ${e.id}" class="btn-sm btn-edit">✏ Editar</a>
+              <form class="inline" th:action="'/coordinador/alumnos/desactivar/' + ${e.id}" method="post" th:if="${e.activo}">
+                <button type="submit" class="btn-sm btn-danger">Desactivar</button>
+              </form>
+              <form class="inline" th:action="'/coordinador/alumnos/activar/' + ${e.id}" method="post" th:unless="${e.activo}">
+                <button type="submit" class="btn-sm btn-success">Activar</button>
+              </form>
+            </div>
+          </td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(estudiantes)}">
+          <td colspan="6" style="text-align:center;color:#999;padding:20px;">No hay estudiantes.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+</body>
+</html>

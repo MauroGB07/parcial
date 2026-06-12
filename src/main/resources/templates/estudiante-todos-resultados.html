@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8"/>
+<title>Todos mis Resultados</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Segoe UI',sans-serif;background:#f5f0e8;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:30px;}
+  .card{background:#fff;border-radius:14px;width:600px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.1);}
+  .card-header{background:linear-gradient(135deg,#3b82f6,#1d4ed8);color:#fff;padding:18px;text-align:center;font-size:17px;font-weight:700;}
+  .card-body{padding:24px;}
+  .result-item{border-left:4px solid #5a7a2e;background:#f0f7e8;border-radius:0 8px 8px 0;padding:16px;margin-bottom:12px;}
+  .result-item .date{font-size:13px;font-weight:700;color:#3a5a1e;margin-bottom:8px;}
+  .result-row{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:10px;}
+  .result-box{background:#fff;border-radius:6px;padding:8px 14px;text-align:center;flex:1;min-width:90px;}
+  .result-box .lbl{font-size:10px;color:#888;}
+  .result-box .val{font-size:20px;font-weight:700;}
+  .result-box .nivel{font-size:11px;color:#5a7a2e;}
+  .section-title{font-size:11px;font-weight:700;color:#666;text-transform:uppercase;letter-spacing:.5px;margin:14px 0 8px;}
+  .competencias{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+  .comp{background:#fff;border-radius:6px;padding:10px;text-align:center;}
+  .comp .comp-name{font-size:10px;color:#666;margin-bottom:4px;}
+  .comp .comp-val{font-size:18px;font-weight:700;color:#333;}
+  .comp .comp-nivel{font-size:10px;color:#1d4ed8;}
+  .no-result{background:#fff3cd;padding:18px;border-radius:10px;text-align:center;color:#856404;}
+  .btn-back{display:block;text-align:center;background:#5a7a2e;color:#fff;padding:11px;border-radius:8px;text-decoration:none;font-weight:600;margin-top:18px;}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="card-header">📈 Todos mis Resultados Saber Pro</div>
+  <div class="card-body">
+    <div th:if="${estudiante.puntajeGlobal != null}" class="result-item">
+      <div class="date">📅 Examen del <span th:text="${estudiante.fechaExamen != null} ? ${estudiante.fechaExamen} : 'Fecha no registrada'"></span></div>
+      <div class="result-row">
+        <div class="result-box">
+          <div class="lbl">🏆 Puntaje Global</div>
+          <div class="val" th:text="${estudiante.puntajeGlobal}">0</div>
+          <div class="nivel" th:text="${estudiante.nivelGlobal}">-</div>
+        </div>
+        <div class="result-box" th:if="${estudiante.ingles != null}">
+          <div class="lbl">🌐 Inglés</div>
+          <div class="val" th:text="${estudiante.ingles}">0</div>
+          <div class="nivel" th:text="${estudiante.inglesNivelMcer}">-</div>
+        </div>
+      </div>
+
+      <div class="section-title">Competencias Genéricas</div>
+      <div class="competencias">
+        <div class="comp" th:if="${estudiante.comunicacionEscrita != null}">
+          <div class="comp-name">✏ Com. Escrita</div>
+          <div class="comp-val" th:text="${estudiante.comunicacionEscrita}">-</div>
+          <div class="comp-nivel" th:text="${estudiante.comunicacionEscritaNivel}">-</div>
+        </div>
+        <div class="comp" th:if="${estudiante.razonamientoCuantitativo != null}">
+          <div class="comp-name">🔢 Raz. Cuantitativo</div>
+          <div class="comp-val" th:text="${estudiante.razonamientoCuantitativo}">-</div>
+          <div class="comp-nivel" th:text="${estudiante.razonamientoCuantitativoNivel}">-</div>
+        </div>
+        <div class="comp" th:if="${estudiante.lecturaCritica != null}">
+          <div class="comp-name">📖 Lectura Crítica</div>
+          <div class="comp-val" th:text="${estudiante.lecturaCritica}">-</div>
+          <div class="comp-nivel" th:text="${estudiante.lecturaCriticaNivel}">-</div>
+        </div>
+        <div class="comp" th:if="${estudiante.competenciasCiudadanas != null}">
+          <div class="comp-name">👥 Comp. Ciudadanas</div>
+          <div class="comp-val" th:text="${estudiante.competenciasCiudadanas}">-</div>
+          <div class="comp-nivel" th:text="${estudiante.competenciasCiudadanasNivel}">-</div>
+        </div>
+      </div>
+
+      <div class="section-title" th:if="${estudiante.formulacionProyectos != null or estudiante.pensamientoCientifico != null or estudiante.disenoSoftware != null}">Competencias Específicas</div>
+      <div class="competencias" th:if="${estudiante.formulacionProyectos != null or estudiante.pensamientoCientifico != null or estudiante.disenoSoftware != null}">
+        <div class="comp" th:if="${estudiante.formulacionProyectos != null}">
+          <div class="comp-name">📋 Form. Proyectos</div>
+          <div class="comp-val" th:text="${estudiante.formulacionProyectos}">-</div>
+          <div class="comp-nivel" th:text="${estudiante.formulacionProyectosNivel}">-</div>
+        </div>
+        <div class="comp" th:if="${estudiante.pensamientoCientifico != null}">
+          <div class="comp-name">🔬 Pens. Científico</div>
+          <div class="comp-val" th:text="${estudiante.pensamientoCientifico}">-</div>
+          <div class="comp-nivel" th:text="${estudiante.pensamientoCientificoNivel}">-</div>
+        </div>
+        <div class="comp" th:if="${estudiante.disenoSoftware != null}">
+          <div class="comp-name">💻 Diseño Software</div>
+          <div class="comp-val" th:text="${estudiante.disenoSoftware}">-</div>
+          <div class="comp-nivel" th:text="${estudiante.disenoSoftwareNivel}">-</div>
+        </div>
+      </div>
+    </div>
+    <div th:unless="${estudiante.puntajeGlobal != null}" class="no-result">
+      ℹ️ No hay resultados registrados.
+    </div>
+    <a href="/estudiante/portal" class="btn-back">← Volver al Inicio</a>
+  </div>
+</div>
+</body>
+</html>

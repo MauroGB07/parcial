@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8"/>
+<title>Beneficios Académicos</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Segoe UI',sans-serif;background:#f5f0e8;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:30px;}
+  .card{background:#fff;border-radius:14px;width:480px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.1);}
+  .card-header{background:linear-gradient(135deg,#3b82f6,#1d4ed8);color:#fff;padding:18px;text-align:center;font-size:17px;font-weight:700;}
+  .card-body{padding:24px;}
+  .beneficio-box{background:#5a7a2e;color:#fff;border-radius:12px;padding:22px;text-align:center;}
+  .beneficio-box .trophy{font-size:40px;margin-bottom:8px;}
+  .beneficio-box h3{font-size:20px;font-weight:800;margin-bottom:6px;}
+  .beneficio-box p{font-size:12px;opacity:.85;}
+  .detail-list{margin-top:16px;display:flex;flex-direction:column;gap:10px;}
+  .detail-item{background:rgba(255,255,255,.15);border-radius:8px;padding:12px;}
+  .detail-item .di-label{font-size:12px;font-weight:700;}
+  .detail-item .di-desc{font-size:12px;opacity:.85;}
+  .detail-item .di-val{display:inline-block;background:rgba(255,255,255,.25);padding:3px 12px;border-radius:20px;font-size:13px;font-weight:700;margin-top:4px;}
+  .vigencia{background:rgba(0,0,0,.15);border-radius:6px;padding:8px;text-align:center;margin-top:12px;font-size:12px;}
+  .no-beneficio{background:#f8d7da;color:#721c24;border-radius:10px;padding:18px;text-align:center;}
+  .btn-back{display:block;text-align:center;background:#5a7a2e;color:#fff;padding:11px;border-radius:8px;text-decoration:none;font-weight:600;margin-top:18px;}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="card-header">🎁 Beneficios Académicos</div>
+  <div class="card-body">
+    <div th:if="${tieneBeneficio}" class="beneficio-box">
+      <div class="trophy">🏆</div>
+      <h3>¡FELICITACIONES!</h3>
+      <p>Exoneración nota 5.0 + Beca 100% – Puntaje superior a 241</p>
+      <div class="detail-list">
+        <div class="detail-item">
+          <div class="di-label">📄 Exoneración de Trabajo de Grado</div>
+          <div class="di-desc">¡Felicitaciones! Has sido exonerado del trabajo de grado.</div>
+          <div class="di-val">5.0/5.0</div>
+        </div>
+        <div class="detail-item">
+          <div class="di-label">🎓 Beca de Derechos de Grado</div>
+          <div class="di-desc">Has obtenido un descuento en tus derechos de grado.</div>
+          <div class="di-val">100%</div>
+        </div>
+      </div>
+      <div class="vigencia">📅 Vigencia: hasta
+        <span th:if="${estudiante.fechaExamen != null}"
+              th:text="${estudiante.fechaExamen.plusYears(1)}">-</span>
+        <span th:unless="${estudiante.fechaExamen != null}">Ver con coordinador</span>
+      </div>
+    </div>
+    <div th:unless="${tieneBeneficio}" class="no-beneficio">
+      ℹ️ Aún no alcanzas el puntaje mínimo para beneficios (241 puntos).
+      <br/><br/>
+      <span th:if="${estudiante.puntajeGlobal != null}">Tu puntaje actual: <strong th:text="${estudiante.puntajeGlobal}">-</strong></span>
+    </div>
+    <a href="/estudiante/portal" class="btn-back">← Volver al Inicio</a>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8"/>
+<title>Panel Coordinador – Saber Pro</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Segoe UI',sans-serif;background:#f5f0e8;min-height:100vh;}
+  .header{background:linear-gradient(135deg,#3b82f6,#1d4ed8);text-align:center;padding:28px 20px 32px;color:#fff;}
+  .header .logo{background:#fff;border-radius:50%;width:60px;height:60px;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-weight:800;color:#1d4ed8;font-size:14px;}
+  .header h2{font-size:20px;margin-bottom:6px;}
+  .profile-chip{display:inline-block;background:rgba(255,255,255,0.2);border-radius:20px;padding:6px 18px;font-size:14px;}
+  .container{max-width:700px;margin:0 auto;padding:24px 20px;}
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:24px;}
+  .stat{border-radius:10px;padding:20px;text-align:center;color:#fff;}
+  .stat.red{background:#1d4ed8;}
+  .stat.green{background:#5a7a2e;}
+  .stat.orange{background:#d4813a;}
+  .stat .num{font-size:36px;font-weight:800;}
+  .stat .lbl{font-size:11px;text-transform:uppercase;opacity:.85;margin-top:4px;}
+  .card{background:#fff;border-radius:12px;padding:22px;margin-bottom:20px;box-shadow:0 2px 8px rgba(0,0,0,.07);}
+  .section-title{font-size:15px;font-weight:700;color:#555;margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+  .options{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+  .opt{background:#f9f5f0;border:1.5px solid #e8e0d5;border-radius:10px;padding:18px;text-align:center;text-decoration:none;color:#333;transition:.2s;}
+  .opt:hover{background:#f0e8dc;border-color:#1d4ed8;}
+  .opt .icon{font-size:28px;margin-bottom:6px;}
+  .opt .lbl{font-size:12px;color:#666;}
+  .btn-logout{display:block;text-align:center;margin-top:12px;background:#1d4ed8;color:#fff;padding:11px;border-radius:8px;text-decoration:none;font-weight:600;}
+  .btn-logout:hover{background:#1e40af;}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="logo">uts</div>
+  <h2>👥 Panel del Coordinador</h2>
+  <div class="profile-chip">
+    <strong th:text="${nombreCoordinador}">Coordinador</strong><br/>
+    <small>🏛 Área: <span th:text="${area}">-</span></small>
+  </div>
+</div>
+<div class="container">
+  <div class="stats">
+    <div class="stat red">
+      <div class="num" th:text="${totalEstudiantes}">0</div>
+      <div class="lbl">Total Estudiantes</div>
+    </div>
+    <div class="stat green">
+      <div class="num" th:text="${conResultados}">0</div>
+      <div class="lbl">Con Resultados</div>
+    </div>
+    <div class="stat orange">
+      <div class="num" th:text="${sinResultados}">0</div>
+      <div class="lbl">Sin Resultados</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="section-title">📋 Opciones de Gestión</div>
+    <div class="options">
+      <a href="/coordinador/alumnos" class="opt">
+        <div class="icon">👨‍🎓</div>
+        <div class="lbl">Gestión de Alumnos (CRUD)</div>
+      </a>
+      <a href="/coordinador/informe-general" class="opt">
+        <div class="icon">📄</div>
+        <div class="lbl">Informe General de Alumnos</div>
+      </a>
+      <a href="/coordinador/informe-detallado" class="opt">
+        <div class="icon">📊</div>
+        <div class="lbl">Informe Detallado por Programa</div>
+      </a>
+      <a href="/coordinador/informe-beneficios" class="opt">
+        <div class="icon">🎁</div>
+        <div class="lbl">Informe de Beneficios</div>
+      </a>
+    </div>
+  </div>
+
+  <a href="/logout" class="btn-logout">⏻ Cerrar Sesión</a>
+</div>
+</body>
+</html>

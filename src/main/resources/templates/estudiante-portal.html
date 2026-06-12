@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8"/>
+<title>Portal del Estudiante</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Segoe UI',sans-serif;background:#f5f0e8;min-height:100vh;}
+  .header{background:linear-gradient(135deg,#3b82f6,#1d4ed8);text-align:center;padding:24px 20px 28px;color:#fff;}
+  .header .logo{background:#fff;border-radius:50%;width:56px;height:56px;display:flex;align-items:center;justify-content:center;margin:0 auto 8px;font-weight:800;color:#1d4ed8;font-size:12px;}
+  .header h2{font-size:18px;}
+  .profile-chip{display:inline-block;background:rgba(255,255,255,0.2);border-radius:20px;padding:6px 18px;margin-top:8px;font-size:14px;}
+  .container{max-width:600px;margin:0 auto;padding:24px 20px;}
+  .info-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:22px;}
+  .info-box{background:#fff;border-radius:8px;padding:12px;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,.06);}
+  .info-box .lbl{font-size:10px;color:#888;text-transform:uppercase;margin-bottom:4px;}
+  .info-box .val{font-size:13px;font-weight:600;color:#333;}
+  .card{background:#fff;border-radius:12px;padding:20px;margin-bottom:18px;box-shadow:0 2px 8px rgba(0,0,0,.07);}
+  .section-title{font-size:14px;font-weight:700;color:#555;margin-bottom:14px;}
+  .options{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
+  .opt{background:#f9f5f0;border:1.5px solid #e8e0d5;border-radius:10px;padding:16px;text-align:center;text-decoration:none;color:#333;transition:.2s;}
+  .opt:hover{background:#f0e8dc;border-color:#1d4ed8;}
+  .opt .icon{font-size:26px;margin-bottom:5px;}
+  .opt .lbl{font-size:12px;color:#666;}
+  .score-banner{background:#5a7a2e;color:#fff;border-radius:12px;padding:20px;text-align:center;margin-bottom:18px;}
+  .score-banner .trophy{font-size:32px;margin-bottom:6px;}
+  .score-banner .lbl{font-size:12px;opacity:.85;margin-bottom:4px;}
+  .score-banner .num{font-size:44px;font-weight:800;}
+  .score-banner .nivel{background:rgba(255,255,255,0.2);display:inline-block;padding:3px 14px;border-radius:20px;font-size:13px;margin-top:4px;}
+  .no-result{background:#fff3cd;border:1px solid #ffc107;border-radius:10px;padding:16px;text-align:center;color:#856404;font-size:14px;}
+  .btn-logout{display:block;text-align:center;background:#1d4ed8;color:#fff;padding:11px;border-radius:8px;text-decoration:none;font-weight:600;font-size:14px;}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="logo">uts</div>
+  <h2>🎓 Portal del Estudiante</h2>
+  <div class="profile-chip">
+    <strong th:text="${estudiante.nombreCompleto}">Estudiante</strong><br/>
+    <small th:text="${estudiante.correo}">-</small>
+  </div>
+</div>
+<div class="container">
+  <div class="info-row">
+    <div class="info-box"><div class="lbl">Programa</div><div class="val" th:text="${estudiante.programa}">-</div></div>
+    <div class="info-box"><div class="lbl">Semestre</div><div class="val" th:text="${estudiante.semestre}">-</div></div>
+    <div class="info-box"><div class="lbl">Nº Registro</div><div class="val" th:text="${estudiante.numRegistro}">-</div></div>
+  </div>
+
+  <div class="card">
+    <div class="section-title">📋 Mis Opciones</div>
+    <div class="options">
+      <a href="/estudiante/datos-personales" class="opt"><div class="icon">👤</div><div class="lbl">Mis Datos Personales</div></a>
+      <a href="/estudiante/ultimo-resultado" class="opt"><div class="icon">⭐</div><div class="lbl">Mi Último Resultado</div></a>
+      <a href="/estudiante/todos-resultados" class="opt"><div class="icon">📈</div><div class="lbl">Todos mis Resultados</div></a>
+      <a href="/estudiante/beneficios" class="opt"><div class="icon">🎁</div><div class="lbl">Beneficios Obtenidos</div></a>
+    </div>
+  </div>
+
+  <div th:if="${estudiante.puntajeGlobal != null}" class="score-banner">
+    <div class="trophy">🏆</div>
+    <div class="lbl">Tu último puntaje global</div>
+    <div class="num" th:text="${estudiante.puntajeGlobal}">0</div>
+    <div class="nivel" th:text="${estudiante.nivelGlobal}">-</div>
+  </div>
+  <div th:unless="${estudiante.puntajeGlobal != null}" class="no-result">
+    ℹ️ Aún no tienes resultados registrados del Saber Pro.
+  </div>
+
+  <a href="/logout" class="btn-logout">⏻ Cerrar Sesión</a>
+</div>
+</body>
+</html>

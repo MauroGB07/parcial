@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8"/>
+<title>Informe de Beneficios</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Segoe UI',sans-serif;background:#f5f0e8;}
+  .header{background:#5a7a2e;text-align:center;padding:22px 20px;color:#fff;}
+  .header .logo{background:#fff;border-radius:50%;width:48px;height:48px;display:flex;align-items:center;justify-content:center;margin:0 auto 8px;font-weight:800;color:#5a7a2e;font-size:11px;}
+  .header h2{font-size:18px;}
+  .header p{font-size:13px;opacity:.85;margin-top:4px;}
+  .container{max-width:1100px;margin:22px auto;padding:0 20px;}
+  .top-bar{display:flex;gap:12px;justify-content:flex-end;margin-bottom:16px;}
+  .btn{padding:9px 20px;border-radius:7px;border:none;cursor:pointer;font-size:13px;font-weight:600;text-decoration:none;display:inline-block;}
+  .btn-back{background:rgba(90,122,46,0.1);color:#5a7a2e;border:1px solid #5a7a2e;}
+  .btn-excel{background:#5a7a2e;color:#fff;}
+  .card{background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.07);margin-bottom:20px;}
+  .card-header{background:#f0f7e8;padding:14px 20px;font-weight:700;color:#3a5a1e;display:flex;align-items:center;gap:8px;font-size:15px;}
+  table{width:100%;border-collapse:collapse;font-size:13px;}
+  thead tr{background:#5a7a2e;color:#fff;}
+  th,td{padding:10px 12px;text-align:left;border-bottom:1px solid #f0ebe0;}
+  tbody tr:hover{background:#f9fdf4;}
+  .beneficio-badge{background:#5a7a2e;color:#fff;padding:4px 10px;border-radius:6px;font-size:11px;font-weight:600;}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="logo">uts</div>
+  <h2>🏆 Informe de Beneficios</h2>
+  <p>Estudiantes con Exoneración y Becas – Saber Pro</p>
+</div>
+<div class="container">
+  <div class="top-bar">
+    <a href="/coordinador" class="btn btn-back">← Volver al Panel</a>
+    <span class="btn btn-excel">📥 Exportar a Excel</span>
+  </div>
+  <div class="card">
+    <div class="card-header">🎓 Estudiantes con Exoneración de Trabajo de Grado</div>
+    <table>
+      <thead>
+        <tr><th>#</th><th>DOCUMENTO</th><th>NOMBRE COMPLETO</th><th>PROGRAMA</th><th>PUNTAJE GLOBAL</th><th>NIVEL</th><th>BENEFICIO</th></tr>
+      </thead>
+      <tbody>
+        <tr th:each="e,stat : ${estudiantes}">
+          <td th:text="${stat.count}"></td>
+          <td th:text="${e.identificacion}"></td>
+          <td th:text="${e.nombreCompleto}"></td>
+          <td th:text="${e.programa}"></td>
+          <td style="font-weight:700;" th:text="${e.puntajeGlobal}"></td>
+          <td th:text="${e.nivelGlobal}"></td>
+          <td>
+            <span class="beneficio-badge">Exoneración nota 5.0 + Beca 100% – Puntaje superior a 241</span>
+          </td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(estudiantes)}">
+          <td colspan="7" style="text-align:center;color:#999;padding:20px;">No hay estudiantes con beneficios.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+</body>
+</html>

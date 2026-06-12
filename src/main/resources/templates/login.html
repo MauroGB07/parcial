@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Saber Pro – Iniciar Sesión</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Segoe UI',sans-serif; min-height:100vh; display:flex; background:#0f172a; }
+  .left { flex:1; background:url('https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=900') center/cover; position:relative; display:flex; align-items:center; justify-content:center; }
+  .left::after { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(15,23,42,0.80) 0%,rgba(30,58,138,0.65) 100%); }
+  .brand { position:relative; z-index:1; text-align:center; color:#fff; padding:32px; }
+  .brand .logo { background:linear-gradient(135deg,#3b82f6,#1d4ed8); border-radius:20px; width:88px; height:88px; display:flex; align-items:center; justify-content:center; margin:0 auto 20px; box-shadow:0 8px 32px rgba(59,130,246,0.4); }
+  .brand .logo span { font-size:22px; font-weight:900; color:#fff; letter-spacing:-1px; }
+  .brand h2 { font-size:36px; font-weight:800; letter-spacing:-1px; }
+  .brand p { font-size:15px; opacity:.75; margin-top:6px; }
+  .right { width:440px; display:flex; align-items:center; justify-content:center; padding:40px; background:#0f172a; }
+  .card { width:100%; }
+  .card h1 { font-size:26px; color:#f1f5f9; font-weight:700; text-align:center; }
+  .card .sub { text-align:center; color:#64748b; font-size:14px; margin-bottom:28px; margin-top:4px; }
+  label { display:block; font-size:13px; color:#94a3b8; margin-bottom:5px; font-weight:500; }
+  input { width:100%; padding:12px 14px; border:1.5px solid #1e293b; border-radius:10px; font-size:15px; background:#1e293b; color:#f1f5f9; outline:none; transition:.2s; }
+  input::placeholder { color:#475569; }
+  input:focus { border-color:#3b82f6; background:#1e3a5f22; }
+  .field { margin-bottom:18px; }
+  .btn-login { width:100%; background:linear-gradient(135deg,#3b82f6,#1d4ed8); color:#fff; border:none; padding:13px; border-radius:10px; font-size:16px; font-weight:600; cursor:pointer; transition:.2s; box-shadow:0 4px 15px rgba(59,130,246,0.3); }
+  .btn-login:hover { transform:translateY(-1px); box-shadow:0 6px 20px rgba(59,130,246,0.45); }
+  .alert { background:#1e1020; border:1px solid #7c3aed44; color:#c084fc; padding:10px 14px; border-radius:8px; margin-bottom:16px; font-size:14px; }
+  .creds { background:#1e293b; border:1.5px solid #334155; border-radius:12px; padding:14px; margin-top:22px; font-size:13px; }
+  .creds strong { color:#94a3b8; display:block; margin-bottom:10px; font-size:12px; text-transform:uppercase; letter-spacing:.5px; }
+  .cred-row { background:#0f172a; border:1px solid #334155; border-radius:8px; padding:9px 12px; margin-bottom:7px; display:flex; align-items:center; justify-content:space-between; cursor:pointer; transition:.15s; }
+  .cred-row:last-child { margin-bottom:0; }
+  .cred-row:hover { border-color:#3b82f6; background:#0f2040; }
+  .cred-info .role { font-weight:700; color:#e2e8f0; font-size:13px; }
+  .cred-info span { color:#64748b; font-size:12px; }
+  .btn-fill { background:linear-gradient(135deg,#3b82f6,#1d4ed8); color:#fff; border:none; border-radius:6px; padding:5px 12px; font-size:11px; font-weight:600; cursor:pointer; white-space:nowrap; transition:.15s; }
+  .btn-fill:hover { transform:scale(1.05); }
+  .divider { text-align:center; color:#334155; font-size:12px; margin:16px 0; }
+</style>
+</head>
+<body>
+<div class="left">
+  <div class="brand">
+    <div class="logo"><span>UTS</span></div>
+    <h2>Saber Pro</h2>
+    <p>Sistema de Gestión Académica</p>
+  </div>
+</div>
+<div class="right">
+  <div class="card">
+    <h1>Iniciar Sesión</h1>
+    <p class="sub">Ingresa tus credenciales para continuar</p>
+    <div th:if="${error}" class="alert" th:text="${error}"></div>
+    <form id="loginForm" action="/validar" method="post">
+      <div class="field">
+        <label>Usuario o Correo</label>
+        <input type="text" id="usuario" name="usuario" placeholder="correo o identificación" required/>
+      </div>
+      <div class="field">
+        <label>Contraseña</label>
+        <input type="password" id="password" name="password" placeholder="••••••••" required/>
+      </div>
+      <button type="submit" class="btn-login">Iniciar Sesión</button>
+    </form>
+
+    <div class="divider">— Acceso rápido —</div>
+
+    <div class="creds">
+      <strong>Credenciales de prueba</strong>
+      <div class="cred-row" onclick="fillAndLogin('admin@saberpro.edu.co','admin123')">
+        <div class="cred-info">
+          <div class="role">Administrador</div>
+          <span>admin@saberpro.edu.co / admin123</span>
+        </div>
+        <button class="btn-fill" type="button">Ingresar</button>
+      </div>
+      <div class="cred-row" onclick="fillAndLogin('coordinador@saberpro.edu.co','admin123')">
+        <div class="cred-info">
+          <div class="role">Coordinador</div>
+          <span>coordinador@saberpro.edu.co / admin123</span>
+        </div>
+        <button class="btn-fill" type="button">Ingresar</button>
+      </div>
+      <div class="cred-row" onclick="fillAndLogin('juan.barbosa@estudiante.universidad.edu.co','1030678901')">
+        <div class="cred-info">
+          <div class="role">Estudiante</div>
+          <span>juan.barbosa@... / 1030678901</span>
+        </div>
+        <button class="btn-fill" type="button">Ingresar</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  function fillAndLogin(user, pass) {
+    document.getElementById('usuario').value = user;
+    document.getElementById('password').value = pass;
+    document.getElementById('loginForm').submit();
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8"/>
+<title>Mis Datos Personales</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Segoe UI',sans-serif;background:#f5f0e8;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:30px;}
+  .card{background:#fff;border-radius:14px;width:460px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.1);}
+  .card-header{background:linear-gradient(135deg,#3b82f6,#1d4ed8);color:#fff;padding:18px;text-align:center;font-size:17px;font-weight:700;}
+  .card-body{padding:28px;}
+  .avatar{width:64px;height:64px;background:#1d4ed8;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:30px;margin:0 auto 20px;}
+  .field{display:flex;align-items:center;gap:14px;margin-bottom:10px;}
+  .field-label{background:#1d4ed8;color:#fff;padding:7px 10px;border-radius:6px;font-size:12px;white-space:nowrap;min-width:110px;text-align:center;}
+  .field-val{flex:1;padding:8px 12px;border:1.5px solid #eee;border-radius:6px;font-size:14px;color:#444;background:#fafafa;}
+  .btn-back{display:block;text-align:center;background:#5a7a2e;color:#fff;padding:11px;border-radius:8px;text-decoration:none;font-weight:600;margin-top:18px;}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="card-header">📋 Mis Datos Personales</div>
+  <div class="card-body">
+    <div class="avatar">🎓</div>
+    <div class="field"><span class="field-label">Documento</span><span class="field-val" th:text="${'CC ' + estudiante.identificacion}">-</span></div>
+    <div class="field"><span class="field-label">Nombre Completo</span><span class="field-val" th:text="${estudiante.nombreCompleto}">-</span></div>
+    <div class="field"><span class="field-label">Correo</span><span class="field-val" th:text="${estudiante.correo}">-</span></div>
+    <div class="field"><span class="field-label">Teléfono</span><span class="field-val" th:text="${estudiante.telefono}">-</span></div>
+    <div class="field"><span class="field-label">Programa</span><span class="field-val" th:text="${estudiante.programa}">-</span></div>
+    <div class="field"><span class="field-label">Tipo Programa</span><span class="field-val" th:text="${estudiante.tipoPrograma}">-</span></div>
+    <div class="field"><span class="field-label">Semestre</span><span class="field-val" th:text="${estudiante.semestre}">-</span></div>
+    <div class="field"><span class="field-label">Nº Registro</span><span class="field-val" th:text="${estudiante.numRegistro}">-</span></div>
+    <a href="/estudiante/portal" class="btn-back">← Volver al Inicio</a>
+  </div>
+</div>
+</body>
+</html>
