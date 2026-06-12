@@ -68,4 +68,30 @@ public class EstudianteController {
         model.addAttribute("tieneBeneficio", tieneBeneficio);
         return "estudiante-beneficios";
     }
+
+    @GetMapping("/pago")
+    public String pago(HttpSession session, Model model) {
+        Estudiante e = getEstudianteFromSession(session);
+        if (e == null) return "redirect:/login";
+        model.addAttribute("estudiante", e);
+        return "estudiante-pago";
+    }
+
+    @PostMapping("/pago/cargar")
+    public String cargarPago(@RequestParam String referenciaPago, HttpSession session, Model model) {
+        Estudiante e = getEstudianteFromSession(session);
+        if (e == null) return "redirect:/login";
+        e.setPagoCargado(true);
+        estudianteRepository.save(e);
+        model.addAttribute("estudiante", e);
+        model.addAttribute("exito", "¡Comprobante de pago registrado correctamente! Referencia: " + referenciaPago);
+        return "estudiante-pago";
+    }
+
+    @GetMapping("/resolucion-beneficios")
+    public String resolucionBeneficios(HttpSession session, Model model) {
+        if (getEstudianteFromSession(session) == null) return "redirect:/login";
+        model.addAttribute("volver", "/estudiante/portal");
+        return "resolucion-beneficios";
+    }
 }

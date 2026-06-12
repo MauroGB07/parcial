@@ -1,11 +1,18 @@
 TRUNCATE TABLE estudiantes RESTART IDENTITY CASCADE;
 TRUNCATE TABLE coordinadores RESTART IDENTITY CASCADE;
 TRUNCATE TABLE admins RESTART IDENTITY CASCADE;
+TRUNCATE TABLE docentes RESTART IDENTITY CASCADE;
+TRUNCATE TABLE directores RESTART IDENTITY CASCADE;
 TRUNCATE TABLE facultades RESTART IDENTITY CASCADE;
 
 INSERT INTO facultades (nombre, descripcion) VALUES ('Ingeniería de Sistemas', 'Facultad de Ingeniería de Sistemas y Computación');
+INSERT INTO facultades (nombre, descripcion) VALUES ('Tecnología en Sistemas', 'Facultad de Tecnología en Sistemas e Informática');
 
 INSERT INTO admins (nombre, correo, contrasena) VALUES ('Carlos García', 'admin@saberpro.edu.co', 'admin123');
+
+INSERT INTO directores (nombre, correo, telefono, facultad_id, activo) VALUES ('Andrea Salazar', 'director@saberpro.edu.co', '3009876543', 1, true);
+
+INSERT INTO docentes (tipo_documento, numero_documento, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, correo, telefono, facultad_id, contrasena, activo) VALUES ('CC', '1000000003', 'Jorge', 'Luis', 'Méndez', 'Castro', 'docente@saberpro.edu.co', '3012345678', 1, 'admin123', true);
 
 INSERT INTO coordinadores (tipo_documento, numero_documento, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, correo, telefono, area_asignada, contrasena, activo) VALUES ('CC', '1000000002', 'María', 'Fernanda', 'López', 'Rodríguez', 'coordinador@saberpro.edu.co', '3001234567', 'Ingeniería de Sistemas', 'admin123', true);
 

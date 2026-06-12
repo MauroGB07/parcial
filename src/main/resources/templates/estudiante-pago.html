@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8"/>
+<title>Cargue Pago Saber Pro</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Segoe UI',sans-serif;background:#f5f0e8;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:30px;}
+  .card{background:#fff;border-radius:14px;width:480px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.1);}
+  .card-header{background:linear-gradient(135deg,#3b82f6,#1d4ed8);color:#fff;padding:18px;text-align:center;font-size:17px;font-weight:700;}
+  .card-body{padding:24px;}
+  .estado-box{border-radius:12px;padding:22px;text-align:center;color:#fff;margin-bottom:18px;}
+  .estado-box.ok{background:linear-gradient(135deg,#5a7a2e,#4a6a22);}
+  .estado-box.pendiente{background:#d4813a;}
+  .estado-box .icon{font-size:40px;margin-bottom:8px;}
+  .estado-box h3{font-size:18px;font-weight:800;margin-bottom:6px;}
+  .estado-box p{font-size:12px;opacity:.9;}
+  .form-group{display:flex;flex-direction:column;gap:5px;margin-bottom:14px;}
+  .form-group label{font-size:12px;color:#666;font-weight:600;}
+  .form-group input{padding:10px 12px;border:1.5px solid #ddd;border-radius:7px;font-size:14px;}
+  .form-group input:focus{outline:none;border-color:#1d4ed8;}
+  .info-text{font-size:12px;color:#888;margin-bottom:16px;line-height:1.5;}
+  .btn-primary{display:block;width:100%;background:#1d4ed8;color:#fff;border:none;padding:11px;border-radius:8px;font-size:14px;cursor:pointer;font-weight:600;}
+  .btn-primary:hover{background:#3b82f6;}
+  .alert-ok{background:#d4edda;color:#155724;border:1px solid #c3e6cb;padding:10px 14px;border-radius:8px;margin-bottom:16px;font-size:13px;}
+  .btn-back{display:block;text-align:center;background:#5a7a2e;color:#fff;padding:11px;border-radius:8px;text-decoration:none;font-weight:600;margin-top:14px;}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="card-header">💳 Cargue Pago Saber Pro</div>
+  <div class="card-body">
+    <div th:if="${exito}" class="alert-ok" th:text="${exito}"></div>
+
+    <div th:if="${estudiante.pagoCargado}" class="estado-box ok">
+      <div class="icon">✅</div>
+      <h3>Pago Registrado</h3>
+      <p>Tu comprobante de pago de la prueba Saber Pro ya fue registrado en el sistema.</p>
+    </div>
+    <div th:unless="${estudiante.pagoCargado}" class="estado-box pendiente">
+      <div class="icon">⏳</div>
+      <h3>Pago Pendiente</h3>
+      <p>Aún no has registrado el comprobante de pago de la prueba Saber Pro.</p>
+    </div>
+
+    <div th:unless="${estudiante.pagoCargado}">
+      <p class="info-text">Ingresa el número de referencia o consignación del pago realizado para la prueba
+      Saber Pro. Este registro es necesario para habilitar tus resultados y beneficios académicos.</p>
+      <form th:action="@{/estudiante/pago/cargar}" method="post">
+        <div class="form-group">
+          <label>Número de Referencia / Consignación</label>
+          <input type="text" name="referenciaPago" placeholder="Ej: 0123456789" required/>
+        </div>
+        <button type="submit" class="btn-primary">📤 Cargar Comprobante de Pago</button>
+      </form>
+    </div>
+
+    <a href="/estudiante/portal" class="btn-back">← Volver al Inicio</a>
+  </div>
+</div>
+</body>
+</html>

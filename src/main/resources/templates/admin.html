@@ -109,6 +109,154 @@
       </tbody>
     </table>
   </div>
+
+  <!-- ===== FACULTADES ===== -->
+  <div class="card">
+    <div class="section-title">🏛 Crear Nueva Facultad</div>
+    <form action="/admin/facultad/crear" method="post">
+      <div class="form-grid">
+        <div class="form-group"><label>Nombre de la Facultad</label><input type="text" name="nombre" required/></div>
+        <div class="form-group"><label>Descripción</label><input type="text" name="descripcion"/></div>
+      </div>
+      <div class="btn-row"><button type="submit" class="btn-primary">💾 CREAR FACULTAD</button></div>
+    </form>
+  </div>
+
+  <div class="card">
+    <div class="section-title">📋 Lista de Facultades</div>
+    <table>
+      <thead><tr><th>ID</th><th>NOMBRE</th><th>DESCRIPCIÓN</th><th>ACCIÓN</th></tr></thead>
+      <tbody>
+        <tr th:each="f : ${facultades}">
+          <td th:text="${f.id}"></td>
+          <td th:text="${f.nombre}"></td>
+          <td th:text="${f.descripcion}"></td>
+          <td>
+            <form class="inline" th:action="'/admin/facultad/eliminar/' + ${f.id}" method="post" onsubmit="return confirm('¿Eliminar esta facultad?');">
+              <button type="submit" class="btn-sm btn-danger">Eliminar</button>
+            </form>
+          </td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(facultades)}">
+          <td colspan="4" style="text-align:center;color:#999;padding:20px;">No hay facultades registradas.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ===== DIRECTORES ===== -->
+  <div class="card">
+    <div class="section-title">🧑‍💼 Crear Nuevo Director</div>
+    <form action="/admin/director/crear" method="post">
+      <div class="form-grid">
+        <div class="form-group"><label>Nombre Completo</label><input type="text" name="nombre" required/></div>
+        <div class="form-group"><label>Correo Electrónico</label><input type="email" name="correo" required/></div>
+        <div class="form-group"><label>Teléfono</label><input type="text" name="telefono"/></div>
+        <div class="form-group">
+          <label>Facultad Asignada</label>
+          <select name="facultadId">
+            <option value="">– Sin asignar –</option>
+            <option th:each="f : ${facultades}" th:value="${f.id}" th:text="${f.nombre}"></option>
+          </select>
+        </div>
+      </div>
+      <div class="btn-row"><button type="submit" class="btn-primary">💾 CREAR DIRECTOR</button></div>
+    </form>
+  </div>
+
+  <div class="card">
+    <div class="section-title">📋 Lista de Directores</div>
+    <table>
+      <thead><tr><th>ID</th><th>NOMBRE</th><th>CORREO</th><th>TELÉFONO</th><th>FACULTAD</th><th>ESTADO</th><th>ACCIÓN</th></tr></thead>
+      <tbody>
+        <tr th:each="d : ${directores}">
+          <td th:text="${d.id}"></td>
+          <td th:text="${d.nombre}"></td>
+          <td th:text="${d.correo}"></td>
+          <td th:text="${d.telefono}"></td>
+          <td th:text="${d.facultad != null} ? ${d.facultad.nombre} : '-'"></td>
+          <td><span class="badge" th:classappend="${d.activo} ? 'badge-active' : 'badge-inactive'" th:text="${d.activo} ? 'Activo' : 'Inactivo'"></span></td>
+          <td>
+            <form class="inline" th:if="${d.activo}" th:action="'/admin/director/desactivar/' + ${d.id}" method="post">
+              <button type="submit" class="btn-sm btn-danger">Desactivar</button>
+            </form>
+            <form class="inline" th:unless="${d.activo}" th:action="'/admin/director/activar/' + ${d.id}" method="post">
+              <button type="submit" class="btn-sm btn-success">Activar</button>
+            </form>
+          </td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(directores)}">
+          <td colspan="7" style="text-align:center;color:#999;padding:20px;">No hay directores registrados.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ===== DOCENTES ===== -->
+  <div class="card">
+    <div class="section-title">👨‍🏫 Crear Nuevo Docente</div>
+    <form action="/admin/docente/crear" method="post">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Tipo Documento</label>
+          <select name="tipoDocumento">
+            <option value="CC">Cédula de Ciudadanía</option>
+            <option value="CE">Cédula Extranjería</option>
+            <option value="TI">Tarjeta de Identidad</option>
+          </select>
+        </div>
+        <div class="form-group"><label># Número Documento</label><input type="text" name="numeroDocumento" required/></div>
+        <div class="form-group"><label>Primer Nombre</label><input type="text" name="primerNombre" required/></div>
+        <div class="form-group"><label>Segundo Nombre</label><input type="text" name="segundoNombre"/></div>
+        <div class="form-group"><label>Primer Apellido</label><input type="text" name="primerApellido" required/></div>
+        <div class="form-group"><label>Segundo Apellido</label><input type="text" name="segundoApellido"/></div>
+        <div class="form-group"><label>Correo Electrónico</label><input type="email" name="correo" required/></div>
+        <div class="form-group"><label>Teléfono</label><input type="text" name="telefono"/></div>
+        <div class="form-group">
+          <label>Facultad Asignada</label>
+          <select name="facultadId">
+            <option value="">– Sin asignar –</option>
+            <option th:each="f : ${facultades}" th:value="${f.id}" th:text="${f.nombre}"></option>
+          </select>
+        </div>
+        <div class="form-group"><label>Contraseña</label><input type="password" name="contrasena" placeholder="admin123" required/></div>
+      </div>
+      <div class="btn-row"><button type="submit" class="btn-primary">💾 CREAR DOCENTE</button></div>
+    </form>
+  </div>
+
+  <div class="card">
+    <div class="section-title">📋 Lista de Docentes</div>
+    <table>
+      <thead><tr><th>ID</th><th>DOCUMENTO</th><th>NOMBRE COMPLETO</th><th>CORREO</th><th>FACULTAD</th><th>ESTADO</th><th>ACCIÓN</th></tr></thead>
+      <tbody>
+        <tr th:each="doc : ${docentes}">
+          <td th:text="${doc.id}"></td>
+          <td th:text="${doc.tipoDocumento + ' ' + doc.numeroDocumento}"></td>
+          <td th:text="${doc.nombreCompleto}"></td>
+          <td th:text="${doc.correo}"></td>
+          <td th:text="${doc.facultad != null} ? ${doc.facultad.nombre} : '-'"></td>
+          <td><span class="badge" th:classappend="${doc.activo} ? 'badge-active' : 'badge-inactive'" th:text="${doc.activo} ? 'Activo' : 'Inactivo'"></span></td>
+          <td>
+            <form class="inline" th:if="${doc.activo}" th:action="'/admin/docente/desactivar/' + ${doc.id}" method="post">
+              <button type="submit" class="btn-sm btn-danger">Desactivar</button>
+            </form>
+            <form class="inline" th:unless="${doc.activo}" th:action="'/admin/docente/activar/' + ${doc.id}" method="post">
+              <button type="submit" class="btn-sm btn-success">Activar</button>
+            </form>
+          </td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(docentes)}">
+          <td colspan="7" style="text-align:center;color:#999;padding:20px;">No hay docentes registrados.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card" style="text-align:center;">
+    <div class="section-title" style="justify-content:center;">📜 Resolución Beneficios Tecnología e Ingeniería</div>
+    <a href="/admin/resolucion-beneficios" class="btn-primary" style="display:inline-flex;text-decoration:none;">Ver Resolución</a>
+  </div>
 </div>
 </body>
 </html>

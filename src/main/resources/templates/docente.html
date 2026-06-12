@@ -2,7 +2,7 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8"/>
-<title>Panel Coordinador – Saber Pro</title>
+<title>Panel Docente – Saber Pro</title>
 <style>
   *{margin:0;padding:0;box-sizing:border-box;}
   body{font-family:'Segoe UI',sans-serif;background:#f5f0e8;min-height:100vh;}
@@ -32,10 +32,10 @@
 <body>
 <div class="header">
   <div class="logo">uts</div>
-  <h2>👥 Panel del Coordinador</h2>
+  <h2>📚 Panel del Docente</h2>
   <div class="profile-chip">
-    <strong th:text="${nombreCoordinador}">Coordinador</strong><br/>
-    <small>🏛 Área: <span th:text="${area}">-</span></small>
+    <strong th:text="${nombreDocente}">Docente</strong><br/>
+    <small>🏛 Facultad: <span th:text="${facultad != null} ? ${facultad} : 'No asignada'">-</span></small>
   </div>
 </div>
 <div class="container">
@@ -55,25 +55,29 @@
   </div>
 
   <div class="card">
-    <div class="section-title">📋 Opciones de Gestión</div>
+    <div class="section-title">📋 Opciones de Consulta</div>
     <div class="options">
-      <a href="/coordinador/alumnos" class="opt">
-        <div class="icon">👨‍🎓</div>
-        <div class="lbl">Gestión de Alumnos (CRUD)</div>
+      <a href="/docente/alumnos" class="opt">
+        <div class="icon">🏛</div>
+        <div class="lbl">Alumnos por Facultad</div>
       </a>
-      <a href="/coordinador/informe-general" class="opt">
+      <a href="/docente/alumnos" class="opt">
+        <div class="icon">🔎</div>
+        <div class="lbl">Buscar Alumno por Cédula</div>
+      </a>
+      <a href="/docente/informe-general" class="opt">
         <div class="icon">📄</div>
         <div class="lbl">Informe General de Alumnos</div>
       </a>
-      <a href="/coordinador/informe-detallado" class="opt">
+      <a href="/docente/informe-detallado" class="opt">
         <div class="icon">📊</div>
         <div class="lbl">Informe Detallado por Programa</div>
       </a>
-      <a href="/coordinador/informe-beneficios" class="opt">
+      <a href="/docente/informe-beneficios" class="opt">
         <div class="icon">🎁</div>
         <div class="lbl">Informe de Beneficios</div>
       </a>
-      <a href="/coordinador/resolucion-beneficios" class="opt">
+      <a href="/docente/resolucion-beneficios" class="opt">
         <div class="icon">📜</div>
         <div class="lbl">Resolución Beneficios Tecnología e Ingeniería</div>
       </a>

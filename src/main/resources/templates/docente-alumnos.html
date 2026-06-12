@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8"/>
+<title>Alumnos – Panel Docente</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Segoe UI',sans-serif;background:#f5f0e8;}
+  .header{background:linear-gradient(135deg,#3b82f6,#1d4ed8);text-align:center;padding:24px 20px;color:#fff;}
+  .header .logo{background:#fff;border-radius:50%;width:50px;height:50px;display:flex;align-items:center;justify-content:center;margin:0 auto 8px;font-weight:800;color:#1d4ed8;font-size:12px;}
+  .header h2{font-size:19px;}
+  .container{max-width:1100px;margin:24px auto;padding:0 20px;}
+  .filters{background:#fff;border-radius:12px;padding:18px;margin-bottom:18px;box-shadow:0 2px 8px rgba(0,0,0,.07);display:flex;gap:14px;flex-wrap:wrap;align-items:flex-end;}
+  .filters form{display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;}
+  .form-group{display:flex;flex-direction:column;gap:5px;}
+  .form-group label{font-size:12px;color:#666;font-weight:600;}
+  .form-group input,.form-group select{padding:9px 12px;border:1.5px solid #ddd;border-radius:7px;font-size:14px;min-width:200px;}
+  .form-group input:focus,.form-group select:focus{outline:none;border-color:#1d4ed8;}
+  .btn{padding:9px 20px;border-radius:7px;border:none;cursor:pointer;font-size:13px;font-weight:600;text-decoration:none;display:inline-block;}
+  .btn-primary{background:#1d4ed8;color:#fff;}
+  .btn-primary:hover{background:#3b82f6;}
+  .btn-back{background:rgba(29,78,216,0.1);color:#1d4ed8;border:1px solid #1d4ed8;}
+  .card{background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.07);}
+  table{width:100%;border-collapse:collapse;font-size:13px;}
+  thead tr{background:linear-gradient(135deg,#3b82f6,#1d4ed8);color:#fff;}
+  th,td{padding:10px 12px;text-align:left;border-bottom:1px solid #f0e8e0;}
+  tbody tr:hover{background:#faf6f2;}
+  .badge{padding:2px 9px;border-radius:20px;font-size:11px;font-weight:600;}
+  .badge-active{background:#d4edda;color:#155724;}
+  .badge-inactive{background:#f8d7da;color:#721c24;}
+  .top-actions{display:flex;justify-content:flex-end;margin-bottom:14px;}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="logo">uts</div>
+  <h2>🏛 Alumnos por Facultad / 🔎 por Cédula</h2>
+</div>
+<div class="container">
+  <div class="top-actions">
+    <a href="/docente" class="btn btn-back">← Volver al Panel</a>
+  </div>
+  <div class="filters">
+    <form method="get" action="/docente/alumnos">
+      <div class="form-group">
+        <label>Filtrar por Facultad</label>
+        <select name="facultadId" onchange="this.form.submit()">
+          <option value="">– Todas las facultades –</option>
+          <option th:each="f : ${facultades}" th:value="${f.id}" th:text="${f.nombre}" th:selected="${f.id == facultadSeleccionada}"></option>
+        </select>
+      </div>
+    </form>
+    <form method="get" action="/docente/alumnos">
+      <div class="form-group">
+        <label>Buscar por Cédula</label>
+        <input type="text" name="cedula" placeholder="Número de documento" th:value="${cedulaBuscada}"/>
+      </div>
+      <button type="submit" class="btn btn-primary">🔎 Buscar</button>
+    </form>
+  </div>
+  <div class="card">
+    <table>
+      <thead>
+        <tr><th>Nº</th><th>DOCUMENTO</th><th>NOMBRE COMPLETO</th><th>PROGRAMA</th><th>FACULTAD</th><th>SEMESTRE</th><th>CORREO</th><th>ESTADO</th><th>PUNTAJE GLOBAL</th></tr>
+      </thead>
+      <tbody>
+        <tr th:each="e,it : ${estudiantes}">
+          <td th:text="${it.index + 1}"></td>
+          <td th:text="${e.tipoDocumento + ' ' + e.identificacion}"></td>
+          <td th:text="${e.nombreCompleto}"></td>
+          <td th:text="${e.programa}"></td>
+          <td th:text="${e.facultad != null} ? ${e.facultad.nombre} : '-'"></td>
+          <td th:text="${e.semestre}"></td>
+          <td th:text="${e.correo}"></td>
+          <td><span class="badge" th:classappend="${e.activo} ? 'badge-active' : 'badge-inactive'" th:text="${e.activo} ? 'Activo' : 'Inactivo'"></span></td>
+          <td th:text="${e.puntajeGlobal != null} ? ${e.puntajeGlobal} : '-'"></td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(estudiantes)}">
+          <td colspan="9" style="text-align:center;color:#999;padding:20px;">No se encontraron estudiantes con esos criterios.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+</body>
+</html>

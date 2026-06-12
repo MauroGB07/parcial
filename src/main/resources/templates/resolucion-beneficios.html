@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8"/>
+<title>Resolución Beneficios Tecnología e Ingeniería</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Segoe UI',sans-serif;background:#f5f0e8;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:30px;}
+  .card{background:#fff;border-radius:14px;width:640px;max-width:95vw;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.1);}
+  .card-header{background:linear-gradient(135deg,#3b82f6,#1d4ed8);color:#fff;padding:20px;text-align:center;}
+  .card-header h2{font-size:18px;margin-bottom:4px;}
+  .card-header span{font-size:12px;opacity:.85;}
+  .card-body{padding:26px;}
+  .articulo{background:#f5f8ff;border-left:4px solid #1d4ed8;border-radius:0 8px 8px 0;padding:14px 16px;margin-bottom:14px;}
+  .articulo h4{font-size:13px;color:#1d4ed8;margin-bottom:6px;}
+  .articulo p{font-size:13px;color:#444;line-height:1.5;}
+  .req-list{margin-top:6px;}
+  .req-list li{font-size:13px;color:#444;margin-left:18px;line-height:1.6;}
+  .beneficio-box{background:linear-gradient(135deg,#5a7a2e,#4a6a22);color:#fff;border-radius:10px;padding:16px;margin-top:16px;text-align:center;}
+  .beneficio-box .val{font-size:22px;font-weight:800;}
+  .beneficio-box .lbl{font-size:12px;opacity:.85;margin-top:2px;}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px;}
+  .btn-back{display:block;text-align:center;background:#1d4ed8;color:#fff;padding:11px;border-radius:8px;text-decoration:none;font-weight:600;margin-top:20px;}
+  .btn-back:hover{background:#3b82f6;}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="card-header">
+    <h2>📜 Resolución Beneficios Tecnología e Ingeniería</h2>
+    <span>Programas de Ingeniería y Tecnología – Pruebas Saber Pro</span>
+  </div>
+  <div class="card-body">
+    <div class="articulo">
+      <h4>ARTÍCULO 1 — OBJETO</h4>
+      <p>Esta resolución reglamenta el otorgamiento de beneficios académicos a los estudiantes de los programas
+      de Ingeniería y Tecnología que obtengan un desempeño sobresaliente en las Pruebas Saber Pro, como
+      reconocimiento a su excelencia académica.</p>
+    </div>
+    <div class="articulo">
+      <h4>ARTÍCULO 2 — REQUISITOS</h4>
+      <p>Para acceder a los beneficios, el estudiante debe cumplir con:</p>
+      <ul class="req-list">
+        <li>Haber presentado la prueba Saber Pro en el periodo vigente.</li>
+        <li>Obtener un puntaje global igual o superior a <strong>241 puntos</strong>.</li>
+        <li>Tener matrícula activa y estar al día con sus obligaciones financieras.</li>
+        <li>Haber registrado el pago de la prueba Saber Pro en la plataforma institucional.</li>
+      </ul>
+    </div>
+    <div class="articulo">
+      <h4>ARTÍCULO 3 — BENEFICIOS OTORGADOS</h4>
+      <p>Los estudiantes que cumplan los requisitos anteriores tendrán derecho a:</p>
+      <div class="grid2">
+        <div class="beneficio-box">
+          <div class="val">5.0 / 5.0</div>
+          <div class="lbl">Exoneración del Trabajo de Grado</div>
+        </div>
+        <div class="beneficio-box">
+          <div class="val">100%</div>
+          <div class="lbl">Beca en Derechos de Grado</div>
+        </div>
+      </div>
+    </div>
+    <div class="articulo">
+      <h4>ARTÍCULO 4 — VIGENCIA</h4>
+      <p>El beneficio otorgado tendrá una vigencia de un (1) año contado a partir de la fecha de presentación
+      de la prueba, y será verificado y certificado por la Coordinación Académica de la Facultad de
+      Ingeniería de Sistemas y Tecnología.</p>
+    </div>
+    <a th:href="${volver}" class="btn-back">← Volver</a>
+  </div>
+</div>
+</body>
+</html>

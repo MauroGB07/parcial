@@ -21,4 +21,8 @@ public interface EstudianteRepository extends JpaRepository<Estudiante, Long> {
     List<Estudiante> findEstudiantesConBeneficios();
 
     List<Estudiante> findByPrograma(String programa);
+
+    List<Estudiante> findByFacultad_Id(Long facultadId);
+
+    List<Estudiante> findByIdentificacionContaining(String identificacion);
 }

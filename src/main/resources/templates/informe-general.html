@@ -31,7 +31,7 @@
   <div class="logo">uts</div>
   <h2>📄 Informe General de Alumnos</h2>
   <div class="info">
-    👤 Coordinador: <strong th:text="${nombreCoordinador}">-</strong> &nbsp;|&nbsp;
+    👤 <span th:text="${rolLabel}">Coordinador</span>: <strong th:text="${nombreCoordinador}">-</strong> &nbsp;|&nbsp;
     🏛 Área: <strong th:text="${area}">-</strong> &nbsp;|&nbsp;
     📅 <span th:text="${#dates.format(#dates.createNow(), 'dd/MM/yyyy HH:mm')}"></span>
   </div>
@@ -40,7 +40,7 @@
   <div class="actions">
     <span class="btn btn-green">📥 Exportar a Excel</span>
     <button onclick="window.print()" class="btn btn-orange">🖨 Imprimir</button>
-    <a href="/coordinador" class="btn btn-back">← Volver al Panel</a>
+    <a th:href="${volver}" class="btn btn-back">← Volver al Panel</a>
   </div>
   <div class="card">
     <table>

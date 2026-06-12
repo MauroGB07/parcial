@@ -153,6 +153,8 @@ public class CoordinadorController {
         model.addAttribute("estudiantes", estudianteRepository.findAll());
         model.addAttribute("nombreCoordinador", session.getAttribute("nombre"));
         model.addAttribute("area", session.getAttribute("area"));
+        model.addAttribute("rolLabel", "Coordinador");
+        model.addAttribute("volver", "/coordinador");
         return "informe-general";
     }
 
@@ -171,6 +173,8 @@ public class CoordinadorController {
         model.addAttribute("estudiantes", lista);
         model.addAttribute("programas", programas);
         model.addAttribute("programaSeleccionado", programa);
+        model.addAttribute("baseUrl", "/coordinador/informe-detallado");
+        model.addAttribute("volver", "/coordinador");
         return "informe-detallado";
     }
 
@@ -178,6 +182,14 @@ public class CoordinadorController {
     public String informeBeneficios(HttpSession session, Model model) {
         if (!checkSession(session)) return "redirect:/login";
         model.addAttribute("estudiantes", estudianteRepository.findEstudiantesConBeneficios());
+        model.addAttribute("volver", "/coordinador");
         return "informe-beneficios";
+    }
+
+    @GetMapping("/resolucion-beneficios")
+    public String resolucionBeneficios(HttpSession session, Model model) {
+        if (!checkSession(session)) return "redirect:/login";
+        model.addAttribute("volver", "/coordinador");
+        return "resolucion-beneficios";
     }
 }

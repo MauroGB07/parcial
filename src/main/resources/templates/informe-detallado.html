@@ -53,15 +53,15 @@
 <div class="container">
   <div class="top-bar">
     <span class="filter-label">🔽 Filtrar por programa:</span>
-    <form method="get" action="/coordinador/informe-detallado" style="display:flex;gap:8px;align-items:center;">
+    <form method="get" th:action="${baseUrl}" style="display:flex;gap:8px;align-items:center;">
       <select class="filter" name="programa" onchange="this.form.submit()">
         <option value="">– Todos los programas –</option>
         <option th:each="p : ${programas}" th:value="${p}" th:text="${p}" th:selected="${p == programaSeleccionado}"></option>
       </select>
     </form>
-    <a href="/coordinador/informe-detallado" class="btn btn-back">← Todos</a>
+    <a th:href="${baseUrl}" class="btn btn-back">← Todos</a>
     <button onclick="window.print()" class="btn btn-orange">🖨 Imprimir</button>
-    <a href="/coordinador" class="btn btn-back">← Volver</a>
+    <a th:href="${volver}" class="btn btn-back">← Volver</a>
   </div>
   <div class="card">
     <table>

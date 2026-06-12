@@ -2,9 +2,11 @@ package com.saberpro.app.controller;
 
 import com.saberpro.app.models.Admin;
 import com.saberpro.app.models.Coordinador;
+import com.saberpro.app.models.Docente;
 import com.saberpro.app.models.Estudiante;
 import com.saberpro.app.repository.AdminRepository;
 import com.saberpro.app.repository.CoordinadorRepository;
+import com.saberpro.app.repository.DocenteRepository;
 import com.saberpro.app.repository.EstudianteRepository;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
@@ -20,13 +22,16 @@ public class LoginController {
 
     private final AdminRepository adminRepository;
     private final CoordinadorRepository coordinadorRepository;
+    private final DocenteRepository docenteRepository;
     private final EstudianteRepository estudianteRepository;
 
     public LoginController(AdminRepository adminRepository,
                            CoordinadorRepository coordinadorRepository,
+                           DocenteRepository docenteRepository,
                            EstudianteRepository estudianteRepository) {
         this.adminRepository = adminRepository;
         this.coordinadorRepository = coordinadorRepository;
+        this.docenteRepository = docenteRepository;
         this.estudianteRepository = estudianteRepository;
     }
 
@@ -37,6 +42,7 @@ public class LoginController {
             return switch (rol) {
                 case "ADMIN" -> "redirect:/admin";
                 case "COORDINADOR" -> "redirect:/coordinador";
+                case "DOCENTE" -> "redirect:/docente";
                 case "ESTUDIANTE" -> "redirect:/estudiante/portal";
                 default -> "login";
             };
@@ -73,6 +79,22 @@ public class LoginController {
             session.setAttribute("area", coord.getAreaAsignada());
             session.setAttribute("coordinadorId", coord.getId());
             return "redirect:/coordinador";
+        }
+
+        // Buscar Docente
+        Optional<Docente> docOpt = docenteRepository.findByCorreo(usuario);
+        if (docOpt.isPresent() && docOpt.get().getContrasena().equals(password)) {
+            Docente doc = docOpt.get();
+            if (!Boolean.TRUE.equals(doc.getActivo())) {
+                model.addAttribute("error", "Tu cuenta está desactivada.");
+                return "login";
+            }
+            session.setAttribute("rol", "DOCENTE");
+            session.setAttribute("nombre", doc.getNombreCompleto());
+            session.setAttribute("correo", doc.getCorreo());
+            session.setAttribute("docenteId", doc.getId());
+            session.setAttribute("facultad", doc.getFacultad() != null ? doc.getFacultad().getNombre() : null);
+            return "redirect:/docente";
         }
 
         // Buscar Estudiante por correo o identificación
